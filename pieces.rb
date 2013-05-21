@@ -1,8 +1,10 @@
+require 'set'
+
 class Piece
   attr_accessor :location
-  attr_reader :color, :board
+  attr_reader :color, :board, :directions
 
-  def initalize(starting_location, color, board)
+  def initialize(starting_location, color, board)
     @location = starting_location
     @color = color
     @board = board
@@ -16,7 +18,11 @@ class Piece
   end
 end
 
-class Sliders < Piece
+class Slider < Piece
+
+  # def initialize(starting_position, color, board)
+  #   super(starting_position, color, board)
+  # end
 
   def valid_move?(position, delta)
     super(position) && valid_path?(position)
@@ -33,27 +39,40 @@ class Sliders < Piece
     # returns an array of all square coordinates between location and position
   end
 
-end
-
-
-class Steppers < Piece
-
-
-end
-
-
-class Queen < Slider
-
-  def valid_move?(position)
-    DELTA = []
-    super(position, )
+  def move
+    @directions.each do |d|
+      puts d
+    end
   end
 end
-#etc...
 
 
+class Stepper < Piece
 
-class Pawn < Steppers
+
+end
+
+
+# class Queen < Slider
+#
+#   def valid_move?(position)
+#     DELTA = []
+#     super(position, )
+#   end
+# end
+# #etc...
+
+class Rook < Slider
+
+  def initialize(starting_location, color, board)
+    super(starting_location, color, board)
+    @directions = Set.new [:north, :south, :east, :west]
+  end
+
+end
+
+
+class Pawn < Stepper
 
 
 end
