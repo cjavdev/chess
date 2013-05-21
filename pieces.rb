@@ -18,24 +18,19 @@ end
 
 class Sliders < Piece
 
-  # def valid_move?(position, delta)
- #    if super(position)
- #
- #
- #    else
- #      return false
- #    end
- #  end
+  def valid_move?(position, delta)
+    super(position) && valid_path?(position)
+  end
 
   def valid_path?(position)
     intermediates = build_path(position)
-    intermediates.none? do |square|
-      valid_move?(square) == false
+    intermediates[0...-1].none? do |square|
+      @board.pos(square).occupied?
     end
   end
 
   def build_path(position)
-    # returns an array of all squares between location and position
+    # returns an array of all square coordinates between location and position
   end
 
 end

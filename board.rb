@@ -12,6 +12,11 @@ class Board
     @board = generate_board
   end
 
+  def pos(position)
+    row, col = position
+
+    @board[row][col]
+  end
 
   private
 
