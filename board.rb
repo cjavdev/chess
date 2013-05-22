@@ -25,8 +25,26 @@ class Board
     @squares[row][col] = piece
   end
 
-  def self.in_board?(coord)
-    coord.all? {|c| c.between?(0, 7)}
+  def self.in_board?(position)
+    position.all? {|coord| c.between?(0, 7)}
+  end
+
+  def check?(king)
+    all_possible_moves = []
+    @squares.each do |row|
+      row.each do |piece|
+        unless piece.nil? || piece.color == king.color
+          all_possible_moves += piece.possible_moves
+        end
+      end
+    end
+    all_possible_moves.include?(king.location)
+  end
+
+
+  def checkmate?
+
+
   end
 
   private
