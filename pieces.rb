@@ -65,6 +65,14 @@ class Piece
     path
   end
 
+  def self.place_pieces(board)
+    Queen.place_queens(board)
+    Rook.place_rooks(board)
+    Bishop.place_bishops(board)
+    King.place_kings(board)
+    Pawn.place_pawns(board)
+    Knight.place_knights(board)
+  end
 end
 
 class Slider < Piece
@@ -77,52 +85,85 @@ end
 
 
 class Queen < Slider
-  @@starting_positions = {
-    :black => [[0,4]],
-    :white => [[7,4]]
-  }
+
 
   def initialize(starting_location, color, board)
     super(starting_location, color, board)
     @directions = Set.new [:north, :south, :east, :west, :se, :ne, :sw, :se]
   end
 
+  def to_s
+    "Q"
+  end
+
+  def self.place_queens(board)
+    starting_positions = {
+      :black => [[0,4]],
+      :white => [[7,4]]
+    }
+    starting_positions.each do |key, value|
+      value.each do |coord|
+        board.active_pieces[key] << Queen.new(coord, key, board)
+      end
+    end
+  end
 end
 
 
 class Rook < Slider
-  @@starting_positions = {
-    :black => [[0,0], [0,7]],
-    :white => [[7,0], [7,7]]
-  }
+
 
   def initialize(starting_location, color, board)
     super(starting_location, color, board)
     @directions = Set.new [:north, :south, :east, :west]
   end
 
+  def to_s
+    "R"
+  end
+
+  def self.place_rooks(board)
+    starting_positions = {
+      :black => [[0,0], [0,7]],
+      :white => [[7,0], [7,7]]
+    }
+    starting_positions.each do |key, value|
+      value.each do |coord|
+        board.active_pieces[key] << Rook.new(coord, key, board)
+      end
+    end
+  end
 end
 
 
 class Bishop < Slider
-  @@starting_positions = {
-    :black => [[0,2], [0,5]],
-    :white => [[7,2], [7,5]]
-  }
+
 
   def initialize(starting_location, color, board)
     super(starting_location, color, board)
     @directions = Set.new [:ne, :se, :nw, :sw]
   end
 
+  def to_s
+    "B"
+  end
+
+  def self.place_bishops(board)
+    starting_positions = {
+      :black => [[0,2], [0,5]],
+      :white => [[7,2], [7,5]]
+    }
+    starting_positions.each do |key, value|
+      value.each do |coord|
+        board.active_pieces[key] << Bishop.new(coord, key, board)
+      end
+    end
+  end
 end
 
 
 class King < Stepper
-  @@starting_positions = {
-    :black => [[0,3]],
-    :white => [[7,3]]
-  }
+
 
   def initialize(starting_location, color, board)
     super(starting_location, color, board)
@@ -130,13 +171,25 @@ class King < Stepper
     @king = true
   end
 
+  def to_s
+    "King"
+  end
+
+  def self.place_kings(board)
+    starting_positions = {
+      :black => [[0,3]],
+      :white => [[7,3]]
+    }
+    starting_positions.each do |key, value|
+      value.each do |coord|
+        board.active_pieces[key] << King.new(coord, key, board)
+      end
+    end
+  end
 end
 
 class Pawn < Stepper
-  @@starting_positions = {
-    :black => [[1,0], [1,1], [1,2], [1,3], [1,4], [1,5], [1,6], [1,7]],
-    :white => [[6,0], [6,1], [6,2], [6,3], [6,4], [6,5], [6,6], [6,7]]
-  }
+
 
   def initialize(starting_location, color, board)
     super(starting_location, color, board)
@@ -148,9 +201,19 @@ class Pawn < Stepper
     end
   end
 
-  def self.place_pawns(board)
-    @@starting_postions.each_key do |key|
+  def to_s
+    "P"
+  end
 
+  def self.place_pawns(board)
+    starting_positions = {
+      :black => [[1,0], [1,1], [1,2], [1,3], [1,4], [1,5], [1,6], [1,7]],
+      :white => [[6,0], [6,1], [6,2], [6,3], [6,4], [6,5], [6,6], [6,7]]
+    }
+    starting_positions.each do |key, value|
+      value.each do |coord|
+        board.active_pieces[key] << Pawn.new(coord, key, board)
+      end
     end
   end
 
@@ -158,13 +221,26 @@ end
 
 
 class Knight < Stepper
-  @@starting_postions = {
-    :black = [[0,1], [0,6]],
-    :white = [[7,1], [7,6]]
-  }
 
   def initialize(starting_location, color, board)
     super(starting_location, color, board)
     @directions = Set.new [:nne, :nnw, :een, :ees, :sse, :ssw, :wwn, :wws]
+  end
+
+  def to_s
+    "K"
+  end
+
+  def self.place_knights(board)
+    starting_positions = {
+      :black => [[0,1], [0,6]],
+      :white => [[7,1], [7,6]]
+    }
+
+    starting_positions.each do |key, value|
+      value.each do |coord|
+        board.active_pieces[key] << Knight.new(coord, key, board)
+      end
+    end
   end
 end

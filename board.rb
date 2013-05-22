@@ -1,8 +1,8 @@
 
-require 'debugger'
+require './pieces.rb'
 class Board
 
-  attr_accessor :squares
+  attr_accessor :squares, :active_pieces
   #Maybe initialize pieces when we generate the board, put pieces where they need to start
 
   COL_HASH = {a: 0, b: 1, c: 2, d: 3, e: 4, f: 5, g: 6, h: 7}
@@ -16,6 +16,7 @@ class Board
   def initialize(squares = self.class.blank_squares)
     @squares = squares
     @active_pieces = {:white => [], :black => []}
+    Piece.place_pieces(self)
   end
 
 
@@ -101,16 +102,6 @@ class Board
       return piece if piece.king?
     end
   end
-#   def dup
-#     self.dup
-#     # debugger
-# #     duped = @squares.map(&:dup)
-# #     @squares.each_with_index do |row, index|
-# #        duped[index] = row.map do |pos|
-# #          pos.dup unless pos.nil?
-# #        end
-# #     end
-#   end
 
   # private
   def self.blank_squares
@@ -123,47 +114,4 @@ class Board
     end
     squares
   end
-
-
 end
-
-
-# class Square
-#
-#   #get rid of this, unneccessary. Make sure to change references in pieces classes
-#
-#
-#   attr_accessor :occupied,
-#   attr_reader :location, :neighbors
-#   attr_writer :occupied_by
-#   alias_method :occupied?, :occupied
-#
-#   def initialize(location)
-#     @location = location
-#     @neighbors = Hash.new { nil }
-#     @occupied_by = nil
-#   end
-#
-#   def set_neighbors
-#     row, col  = @location
-#
-#     DELTAS.each do |key, value|
-#       new_row = value[0] + row
-#       new_col = value[1] + col
-#
-#       if Square.in_board? ([new_row, new_col])
-#         @neighbors[key] = [new_row, new_col]
-#       end
-#     end
-#   end
-#
-#   def occupied_by
-#     return self.occupied_by unless self.occupied_by.nil?
-#     nil
-#   end
-#
-#   def self.in_board?(coord)
-#     coord.all? {|c| c.between?(0, 7)}
-#   end
-#
-# end
