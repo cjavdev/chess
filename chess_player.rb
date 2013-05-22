@@ -1,13 +1,12 @@
 class Player
-  attr_reader :color
 
-  def initialize(color)
+  def initialize
 
   end
 
 
   def turn
-
+    @board.move()
 
   end
 

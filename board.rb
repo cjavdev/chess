@@ -1,7 +1,7 @@
 class Board
 
   attr_reader :squares
-
+  #Maybe initialize pieces when we generate the board, put pieces where they need to start
 
   COL_HASH = {a: 0, b: 1, c: 2, d: 3, e: 4, f: 5, g: 6, h: 7}
 
@@ -11,7 +11,7 @@ class Board
   #[(4-1), col_hash[f]]   reverse order, subtract one from
                           #row to match index, pull value from COL_HASH
 
-  def initialize
+  def initialize(players)
     @squares = generate_squares
   end
 
