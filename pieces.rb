@@ -27,7 +27,7 @@ class Slider < Piece
   #   super(destination) && valid_path?(destination)
   # end
 
-  def possible_moves
+  def possible_moves #move to parent class, refactor to not be dependent on Square class
     possible_moves = []
     @directions.each do |dir|
       possible_moves += build_path(Square.deltas[dir])
@@ -60,7 +60,7 @@ end
 
 class Stepper < Piece
 
-
+  #write new build_path with new deltas for stepper pieces
 end
 
 
@@ -93,4 +93,10 @@ class Pawn < Stepper
       @directions = Set.new [:north, :ne, :nw]
     end
   end
+end
+
+
+class Knight
+  #probably need to overwrite deltas
+
 end
