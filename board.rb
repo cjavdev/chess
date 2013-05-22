@@ -1,16 +1,7 @@
 class Board
 
-  attr_reader :board
-  DELTAS = {
-    :south => [1, 0],
-    :north => [-1, 0],
-    :east => [0, 1],
-    :west => [0, -1],
-    :se => [1, 1],
-    :nw => [-1, -1],
-    :ne => [-1, 1],
-    :sw => [1, -1]
-  }
+  attr_reader :squares
+
 
   COL_HASH = {a: 0, b: 1, c: 2, d: 3, e: 4, f: 5, g: 6, h: 7}
 
@@ -21,17 +12,17 @@ class Board
                           #row to match index, pull value from COL_HASH
 
   def initialize
-    @board = generate_board
+    @squares = generate_squares
   end
 
-  def pos(position)
-    row, col = position
-
-    @board[row][col]
+  def [](row, col)
+    @squares[row][col]
   end
 
-  def self.deltas
-    DELTAS
+  def []=(row, col, piece)
+    old_row, old_col = piece.location
+    @squares[old_row][old_col] = nil
+    @squares[row][col] = piece
   end
 
   def self.in_board?(coord)
@@ -39,63 +30,57 @@ class Board
   end
 
   private
-
-    def generate_board
-      board = []
+    def generate_squares
+      squares = []
       8.times do |row_index|
-        board << []
+        squares << []
         8.times do |column_index|
-          board[row_index] << Square.new([row_index, column_index])
+          squares[row_index] << nil
         end
       end
-      board.each do |row|
-        row.each do |square|
-          square.set_neighbors
-        end
-      end
-      board
+      squares
     end
 
 
 end
 
 
-class Square
-
-  #get rid of this, unneccessary. Make sure to change references in pieces classes
-
-
-  attr_accessor :occupied,
-  attr_reader :location, :neighbors
-  attr_writer :occupied_by
-  alias_method :occupied?, :occupied
-
-  def initialize(location)
-    @location = location
-    @neighbors = Hash.new { nil }
-    @occupied_by = nil
-  end
-
-  def set_neighbors
-    row, col  = @location
-
-    DELTAS.each do |key, value|
-      new_row = value[0] + row
-      new_col = value[1] + col
-
-      if Square.in_board? ([new_row, new_col])
-        @neighbors[key] = [new_row, new_col]
-      end
-    end
-  end
-
-  def occupied_by
-    return self.occupied_by unless self.occupied_by.nil?
-    nil
-  end
-
-  def self.in_board?(coord)
-    coord.all? {|c| c.between?(0, 7)}
-  end
-
-end
+# class Square
+#
+#   #get rid of this, unneccessary. Make sure to change references in pieces classes
+#
+#
+#   attr_accessor :occupied,
+#   attr_reader :location, :neighbors
+#   attr_writer :occupied_by
+#   alias_method :occupied?, :occupied
+#
+#   def initialize(location)
+#     @location = location
+#     @neighbors = Hash.new { nil }
+#     @occupied_by = nil
+#   end
+#
+#   def set_neighbors
+#     row, col  = @location
+#
+#     DELTAS.each do |key, value|
+#       new_row = value[0] + row
+#       new_col = value[1] + col
+#
+#       if Square.in_board? ([new_row, new_col])
+#         @neighbors[key] = [new_row, new_col]
+#       end
+#     end
+#   end
+#
+#   def occupied_by
+#     return self.occupied_by unless self.occupied_by.nil?
+#     nil
+#   end
+#
+#   def self.in_board?(coord)
+#     coord.all? {|c| c.between?(0, 7)}
+#   end
+#
+# end
