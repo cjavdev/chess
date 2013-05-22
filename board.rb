@@ -51,13 +51,15 @@ class Square
     :sw => [1, -1]
   }
 
-  attr_accessor :occupied
+  attr_accessor :occupied,
   attr_reader :location, :neighbors
+  attr_writer :occupied_by
   alias_method :occupied?, :occupied
 
   def initialize(location)
     @location = location
     @neighbors = Hash.new { nil }
+    @occupied_by = nil
   end
 
   def set_neighbors
@@ -67,17 +69,21 @@ class Square
       new_row = value[0] + row
       new_col = value[1] + col
 
-      if in_board? ([new_row, new_col])
+      if Square.in_board? ([new_row, new_col])
         @neighbors[key] = [new_row, new_col]
       end
     end
   end
 
+  def occupied_by
+    return self.occupied_by unless self.occupied_by.nil?
+    nil
+  end
   def self.deltas
     DELTAS
   end
 
-  def in_board?(coord)
+  def self.in_board?(coord)
     coord.all? {|c| c.between?(0, 7)}
   end
 
