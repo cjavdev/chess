@@ -20,15 +20,16 @@ class Piece
     :wws => [1, -2]
   }
 
-  attr_accessor :location
-  attr_reader :color, :board, :directions
+  attr_accessor :location, :board
+  attr_reader :color , :directions, :king
+  alias_method :king?, :king
 
   def initialize(starting_location, color, board)
     @location = starting_location
     @color = color
     @board = board
     @board[*@location] = self #stand in for testing, occupied_by no longer exists
-
+    @king = false
   end
 
 
@@ -76,6 +77,10 @@ end
 
 
 class Queen < Slider
+  @@starting_positions = {
+    :black => [[0,4]],
+    :white => [[7,4]]
+  }
 
   def initialize(starting_location, color, board)
     super(starting_location, color, board)
@@ -86,6 +91,10 @@ end
 
 
 class Rook < Slider
+  @@starting_positions = {
+    :black => [[0,0], [0,7]],
+    :white => [[7,0], [7,7]]
+  }
 
   def initialize(starting_location, color, board)
     super(starting_location, color, board)
@@ -96,6 +105,10 @@ end
 
 
 class Bishop < Slider
+  @@starting_positions = {
+    :black => [[0,2], [0,5]],
+    :white => [[7,2], [7,5]]
+  }
 
   def initialize(starting_location, color, board)
     super(starting_location, color, board)
@@ -106,15 +119,25 @@ end
 
 
 class King < Stepper
+  @@starting_positions = {
+    :black => [[0,3]],
+    :white => [[7,3]]
+  }
 
   def initialize(starting_location, color, board)
     super(starting_location, color, board)
     @directions = Set.new [:north, :south, :east, :west, :se, :ne, :sw, :sw]
+    @king = true
   end
 
 end
 
 class Pawn < Stepper
+  @@starting_positions = {
+    :black => [[1,0], [1,1], [1,2], [1,3], [1,4], [1,5], [1,6], [1,7]],
+    :white => [[6,0], [6,1], [6,2], [6,3], [6,4], [6,5], [6,6], [6,7]]
+  }
+
   def initialize(starting_location, color, board)
     super(starting_location, color, board)
     case @color
@@ -124,10 +147,22 @@ class Pawn < Stepper
       @directions = Set.new [:north]
     end
   end
+
+  def self.place_pawns(board)
+    @@starting_postions.each_key do |key|
+
+    end
+  end
+
 end
 
 
 class Knight < Stepper
+  @@starting_postions = {
+    :black = [[0,1], [0,6]],
+    :white = [[7,1], [7,6]]
+  }
+
   def initialize(starting_location, color, board)
     super(starting_location, color, board)
     @directions = Set.new [:nne, :nnw, :een, :ees, :sse, :ssw, :wwn, :wws]
