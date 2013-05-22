@@ -5,7 +5,7 @@ class Board
   attr_accessor :squares, :active_pieces
   #Maybe initialize pieces when we generate the board, put pieces where they need to start
 
-  COL_HASH = {a: 0, b: 1, c: 2, d: 3, e: 4, f: 5, g: 6, h: 7}
+
 
 
   #EXAMPLE MOVE
@@ -27,32 +27,44 @@ class Board
   def []=(row, col, piece)
     old_row, old_col = piece.location
     @squares[old_row][old_col] = nil
+
+    taken = @squares[row][col]
+    if taken
+      taken.location = nil
+      @active_pieces[taken.color].delete(taken)
+    end
+
     @squares[row][col] = piece
+    piece.location = [row, col]
   end
 
   def self.in_board?(position)
-    position.all? {|coord| c.between?(0, 7)}
+    position.all? {|coord| coord.between?(0, 7)}
   end
 
   def move_piece(start_pos, end_pos) #should return true if the move was valid
+    #debugger
     piece = self[*start_pos]
     unless piece.nil?
-      return piece.valid_move?(end_pos)
+      if piece.valid_move?(end_pos)
+        self[*end_pos] = piece
+        return true
+      end
     end
     false
   end
 
   def check?(king)
-    all_possible_moves.include?(king.location)
+    all_possible_destinations(king.color).include?(king.location)
   end
 
 
-  def checkmate?(king)
-    @active_pieces[king.color].each do |piece|
+  def checkmate?(color)
+    @active_pieces[color].each do |piece|
      current_moves = piece.possible_moves
       current_moves.each do |move|
         ghost_board = self.clone_board
-        ghost_king = ghost_board.king(king.color)
+        ghost_king = ghost_board.king(color)
         ghost_board.move_piece(piece.location, move)
         return false unless ghost_board.check?(ghost_king)
       end
@@ -85,21 +97,23 @@ class Board
     ghost_board
   end
 
-  def all_possible_moves(color)
-    all_possible_moves = []
-    @squares.each do |row|
-      row.each do |piece|
-        unless piece.nil? || piece.color == color
-          all_possible_moves += piece.possible_moves
-        end
-      end
+  def all_possible_destinations(color)
+    all_possible_destinations = []
+    @active_pieces[color].each do |piece|
+      all_possible_destinations += piece.possible_moves
     end
-    all_possible_moves
+    all_possible_destinations
   end
 
   def king(color)
     @active_pieces[color].each do |piece|
       return piece if piece.king?
+    end
+  end
+
+  def display
+    @squares.each do |row|
+      p row
     end
   end
 

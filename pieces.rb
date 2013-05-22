@@ -46,6 +46,15 @@ class Piece
     possible_moves
   end
 
+  def move(destination)
+    if valid_move?(destination)
+      old = @location
+      @board[old] = nil
+      @location = destination
+      @board[destination] = self
+    end
+  end
+
   def build_path(dir)
     path = []
     row_offset, col_offset = dir
