@@ -8,7 +8,7 @@ class Piece
     @location = starting_location
     @color = color
     @board = board
-    @board.pos(@location).occupied_by = self
+    @board.pos(@location).occupied_by = self #stand in for testing, occupied_by no longer exists
 
     # @board[@location] = self
     # Board#[]=
@@ -30,7 +30,7 @@ class Slider < Piece
   def possible_moves #move to parent class, refactor to not be dependent on Square class
     possible_moves = []
     @directions.each do |dir|
-      possible_moves += build_path(Square.deltas[dir])
+      possible_moves += build_path(Board.deltas[dir])
     end
     possible_moves
   end
@@ -39,7 +39,7 @@ class Slider < Piece
     path = []
     row_offset, col_offset = dir
     row, col = [@location[0] + row_offset, @location[1] + col_offset]
-    while Square.in_board?([row, col])
+    while Board.in_board?([row, col])
       #debugger if [row, col] == [4,3]
       square_contents = @board.pos([row, col]).occupied_by
 
@@ -49,7 +49,7 @@ class Slider < Piece
       end
 
       break unless square_contents.nil?
-
+      #BREAK IF SELF == STEPPER?
       row += row_offset
       col += col_offset
     end
@@ -64,14 +64,15 @@ class Stepper < Piece
 end
 
 
-# class Queen < Slider
-#
-#   def valid_move?(position)
-#     DELTA = []
-#     super(position, )
-#   end
-# end
-# #etc...
+class Queen < Slider
+
+  def initialize(starting_location, color, board)
+    super(starting_location, color, board)
+    @directions = Set.new [:north, :south, :east, :west, :se, :ne, :sw, :se]
+  end
+
+end
+
 
 class Rook < Slider
 
@@ -82,6 +83,25 @@ class Rook < Slider
 
 end
 
+
+class Bishop < Slider
+
+  def initialize(starting_location, color, board)
+    super(starting_location, color, board)
+    @directions = Set.new [:ne, :se, :nw, :sw]
+  end
+
+end
+
+
+class King < Stepper
+
+  def initialize(starting_location, color, board)
+    super(starting_location, color, board)
+    @directions = Set.new [:north, :south, :east, :west, :se, :ne, :sw, :se]
+  end
+
+end
 
 class Pawn < Stepper
   def initialize(starting_location, color, board)
