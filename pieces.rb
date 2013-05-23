@@ -102,7 +102,7 @@ class Queen < Slider
   end
 
   def to_s
-    "Q"
+    "Q#{@color}"
   end
 
   def self.place_queens(board)
@@ -112,7 +112,7 @@ class Queen < Slider
     }
     starting_positions.each do |key, value|
       value.each do |coord|
-        board.active_pieces[key] << Queen.new(coord, key, board)
+        Queen.new(coord, key, board)
       end
     end
   end
@@ -128,7 +128,7 @@ class Rook < Slider
   end
 
   def to_s
-    "R"
+    "R#{@color}"
   end
 
   def self.place_rooks(board)
@@ -138,7 +138,7 @@ class Rook < Slider
     }
     starting_positions.each do |key, value|
       value.each do |coord|
-        board.active_pieces[key] << Rook.new(coord, key, board)
+        Rook.new(coord, key, board)
       end
     end
   end
@@ -154,7 +154,7 @@ class Bishop < Slider
   end
 
   def to_s
-    "B"
+    "B#{@color}"
   end
 
   def self.place_bishops(board)
@@ -164,7 +164,7 @@ class Bishop < Slider
     }
     starting_positions.each do |key, value|
       value.each do |coord|
-        board.active_pieces[key] << Bishop.new(coord, key, board)
+        Bishop.new(coord, key, board)
       end
     end
   end
@@ -181,7 +181,7 @@ class King < Stepper
   end
 
   def to_s
-    "King"
+    "King#{@color}"
   end
 
   def self.place_kings(board)
@@ -191,7 +191,7 @@ class King < Stepper
     }
     starting_positions.each do |key, value|
       value.each do |coord|
-        board.active_pieces[key] << King.new(coord, key, board)
+        King.new(coord, key, board)
       end
     end
   end
@@ -211,7 +211,7 @@ class Pawn < Stepper
   end
 
   def to_s
-    "P"
+    "P#{@color}"
   end
 
   def self.place_pawns(board)
@@ -221,7 +221,7 @@ class Pawn < Stepper
     }
     starting_positions.each do |key, value|
       value.each do |coord|
-        board.active_pieces[key] << Pawn.new(coord, key, board)
+        Pawn.new(coord, key, board)
       end
     end
   end
@@ -237,7 +237,7 @@ class Knight < Stepper
   end
 
   def to_s
-    "K"
+    "K#{@color}"
   end
 
   def self.place_knights(board)
@@ -248,7 +248,7 @@ class Knight < Stepper
 
     starting_positions.each do |key, value|
       value.each do |coord|
-        board.active_pieces[key] << Knight.new(coord, key, board)
+        Knight.new(coord, key, board)
       end
     end
   end
