@@ -136,13 +136,15 @@ class Board
   end
 
   def display
+    columns = ["a", "b", "c", "d", "e", "f", "g", "h"]
+    puts columns.join("          ")
     @squares.each_with_index do |row, index|
       print "#{index}"
       r = row.map do |sq|
         sq.to_s.rjust(10)
       end
-      puts r.join(" | ")
-      puts "-------------------------------------------------------------------------------------------------------------------"
+      puts r.join("|")
+      #puts "--------------------------------------------------------------------------------------------------------"
     end
     nil
   end
