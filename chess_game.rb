@@ -24,7 +24,7 @@ class Game
     end
   end
 
-  def self.lets_play
+  def self.lets_play 
     board = Board.new
     player_1 = Player.new(board)
     player_2 = Player.new(board)
@@ -40,8 +40,12 @@ class Game
       puts "#{@turn}"
       @board.display
       current_player = @players[@turn]
-      start_pos, end_pos = current_player.turn(@turn)
-
+      
+      # REV: take_turn rather than turn? method name a little confusing, given the variable name
+      
+      start_pos, end_pos = current_player.turn(@turn) 
+      
+      # REV: interesting way to end loop
       break if @board.move_piece(start_pos, end_pos) #this should return true if the move worked
       puts "Invalid move. Try again."
     end

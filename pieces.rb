@@ -22,6 +22,7 @@ class Piece
 
   attr_accessor :location, :board
   attr_reader :color , :directions, :king
+  # REV: rather than aliasing a method and maintaining a king variable, why not just call is_a?(King) ?
   alias_method :king?, :king
 
   def initialize(starting_location, color, board)
@@ -84,6 +85,8 @@ class Piece
   end
 end
 
+
+# REV: Doesn't look like these intermediate classes do anything. consider having all piece types inherit from piece
 class Slider < Piece
 
 end
@@ -101,6 +104,9 @@ class Queen < Slider
     @directions = Set.new [:north, :south, :east, :west, :se, :ne, :sw, :se]
   end
 
+
+  # REV: we used the colored gem to get colors. not important this works too.
+  # REV: also since you know the color in the base class you could return Q from here and append the color in the base class to DRY things up a tiny bit
   def to_s
     "Q#{@color}"
   end

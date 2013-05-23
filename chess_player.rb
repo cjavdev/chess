@@ -5,7 +5,7 @@ class Player
     @board = board
   end
 
-
+  # REV: Learned a really cool way to do input sanitization today... check out /language-basics/exceptions.md the retry section.
   def turn(color)
     while true
       puts "Choose the piece to move"

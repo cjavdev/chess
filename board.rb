@@ -24,6 +24,7 @@ class Board
     @squares[row][col]
   end
 
+  # REV: cool move 
   def []=(row, col, piece)
     old_row, old_col = piece.location
     @squares[old_row][old_col] = nil
@@ -84,7 +85,9 @@ class Board
 
   def checkmate?(color)
     active_pieces(color).each do |piece|
-     current_moves = piece.possible_moves
+      # REV: indenting
+     current_moves = piece.possible_moves 
+      # REV: maybe no need for current_moves?
       current_moves.each do |move|
         ghost_board = self.clone_board
         ghost_king = ghost_board.king(color)
@@ -95,7 +98,7 @@ class Board
     true
   end
 
-
+  # REV: is the convention dup vs clone?
   def clone_board
     #debugger
     ghost_board = self.clone
